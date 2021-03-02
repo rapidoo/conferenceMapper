@@ -1,5 +1,5 @@
 import chalice
-from chalice import NotFoundError
+from chalice import NotFoundError, Response
 import boto3
 from boto3.dynamodb.conditions import Key
 
@@ -44,8 +44,14 @@ def map():
             "id": int(newid),
             "conference": conf
         }
-
-    print('FLB')
+    else:
+        return Response(body={
+            "message": "No conference or id provided",
+            "conference": False,
+            "id": False
+        },
+            headers={'Content-Type': 'application/json'},
+            status_code=405)
 
 
 def put_item(id, conference):

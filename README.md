@@ -8,3 +8,5 @@ creer l'index : conference-index, sur la colonne conference
 
 Implement uniquement le GET de
 https://github.com/janisstreib/simple_jitsi_conference_mapper
+
+Service dispo ici : https://jitsi.flebris.com/conferenceMapper
