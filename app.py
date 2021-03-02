@@ -15,43 +15,45 @@ conference_table = dynamodb.Table("conference")
 @app.route("/conferenceMapper", methods=["GET"], cors=True)
 def map():
 
-    id = app.current_request.query_params.get('id')
-    conf = app.current_request.query_params.get('conference')
+    if app.current_request.query_params:
 
-    if id:
-        print('request by id', id)
-        exist_conf = get_conference_by_id(id)
-        print(exist_conf)
-        if exist_conf:
-            return exist_conf
-        else:
-            raise NotFoundError("Id not exist")
+        id = app.current_request.query_params.get('id')
+        conf = app.current_request.query_params.get('conference')
 
-    if conf:
-        print('request by conf', conf)
-        res_conf = get_id_by_conference(conf)
-        newid = None
-        if res_conf is not None:
-            newid = res_conf['id']
-        else:
-            newid = randint(10000000, 99999999)
-            while get_conference_by_id(f"newid"):
-                newid = randint(100000, 999999)
+        if id:
+            print('request by id', id)
+            exist_conf = get_conference_by_id(id)
+            print(exist_conf)
+            if exist_conf:
+                return exist_conf
+            else:
+                raise NotFoundError("Id not exist")
 
-        put_item(newid, conf)
-        return {
-            "message": "Successfully retrieved conference mapping",
-            "id": int(newid),
-            "conference": conf
-        }
-    else:
-        return Response(body={
-            "message": "No conference or id provided",
-            "conference": False,
-            "id": False
-        },
-            headers={'Content-Type': 'application/json'},
-            status_code=405)
+        if conf:
+            print('request by conf', conf)
+            res_conf = get_id_by_conference(conf)
+            newid = None
+            if res_conf is not None:
+                newid = res_conf['id']
+            else:
+                newid = randint(10000000, 99999999)
+                while get_conference_by_id(f"newid"):
+                    newid = randint(100000, 999999)
+
+            put_item(newid, conf)
+            return {
+                "message": "Successfully retrieved conference mapping",
+                "id": int(newid),
+                "conference": conf
+            }
+
+    return Response(body={
+        "message": "No conference or id provided",
+        "conference": False,
+        "id": False
+    },
+        headers={'Content-Type': 'application/json'},
+        status_code=405)
 
 
 def put_item(id, conference):
