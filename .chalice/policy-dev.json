@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "dynamodb:*",
+        "dynamodb:PutItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:eu-west-1:*:table/conference",
+        "arn:aws:dynamodb:eu-west-1:*:table/conference*",
+        "arn:aws:dynamodb:eu-west-1:*:table/conference/index/*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+
